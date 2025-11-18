@@ -106,7 +106,7 @@ function moverEsposita() {
         esposita.x = canvas.width - esposita.width;
 }
 
-// Dibujar
+// Dibujar esposita
 function dibujar() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -160,14 +160,24 @@ for (let i = 1; i <= 8; i++) {
 // Clase Esposito que cae
 class EspositoCayendo {
     constructor() {
-        this.x = Math.random() * (canvas.width - 80);
-        this.y = -100;
-        this.speed = 4 + Math.random() * 3;
-        this.frame = Math.floor(Math.random() * 6); // frames 1–6
-        this.width = 80;
-        this.height = 80;
 
-        this.estado = "cayendo"; 
+        // Sale desde más arriba del cielo
+        this.y = -canvas.height;
+
+        // Caída horizontal aleatoria
+        this.x = Math.random() * (canvas.width - 40 * escala);
+
+        // Velocidad de caída
+        this.speed = 4 + Math.random() * 3;
+
+        // Frame inicial aleatorio
+        this.frame = Math.floor(Math.random() * 6);
+
+        // Tamaño responsive similar a esposita
+        this.width = 40 * escala;
+        this.height = 90 * escala;
+
+        this.estado = "cayendo";
         this.tiempoPiso = 0;
         this.almaY = 0;
     }
@@ -176,28 +186,24 @@ class EspositoCayendo {
         if (this.estado === "cayendo") {
             this.y += this.speed;
 
-            // Si llega al piso
-            if (this.y >= canvas.height - 60) {
+            // Al llegar al piso
+            if (this.y >= canvas.height - this.height / 3) {
                 this.estado = "piso";
-                this.y = canvas.height - 60;
+                this.y = canvas.height - this.height / 3;
             }
         }
-
         else if (this.estado === "piso") {
             this.tiempoPiso++;
 
-            // luego de 1 segundo → aparece alma
             if (this.tiempoPiso > 60) {
                 this.estado = "alma";
                 this.almaY = this.y;
             }
         }
-
         else if (this.estado === "alma") {
             this.almaY -= 2;
 
-            // si el alma sale arriba, eliminar
-            if (this.almaY < -100) {
+            if (this.almaY < -200) {
                 return false;
             }
         }
@@ -226,7 +232,7 @@ setInterval(() => {
     espositos.push(new EspositoCayendo());
 }, 1000);
 
-// DIBUJAR ESPOSITO dentro del bucle principal
+// DIBUJAR ESPOSITOS dentro del bucle principal
 const dibujarOriginal = dibujar;
 dibujar = function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -234,7 +240,7 @@ dibujar = function () {
     // Dibujar esposita
     dibujarOriginal();
 
-    // Dibujar espositos cayendo
+    // Dibujar espositos
     espositos = espositos.filter(e => {
         const seguir = e.actualizar();
         e.dibujar();
