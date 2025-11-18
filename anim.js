@@ -144,3 +144,100 @@ window.addEventListener("resize", () => {
     esposita.width = espositaWidth;
     esposita.height = espositaHeight;
 });
+
+/* ===============================
+   🚨 ANIMACIÓN: ESPOSITO CAYENDO
+   =============================== */
+
+// Cargar imágenes del esposito
+const espositoFrames = [];
+for (let i = 1; i <= 8; i++) {
+    const img = new Image();
+    img.src = `img/Esposito${i}.png`;
+    espositoFrames.push(img);
+}
+
+// Clase Esposito que cae
+class EspositoCayendo {
+    constructor() {
+        this.x = Math.random() * (canvas.width - 80);
+        this.y = -100;
+        this.speed = 4 + Math.random() * 3;
+        this.frame = Math.floor(Math.random() * 6); // frames 1–6
+        this.width = 80;
+        this.height = 80;
+
+        this.estado = "cayendo"; 
+        this.tiempoPiso = 0;
+        this.almaY = 0;
+    }
+
+    actualizar() {
+        if (this.estado === "cayendo") {
+            this.y += this.speed;
+
+            // Si llega al piso
+            if (this.y >= canvas.height - 60) {
+                this.estado = "piso";
+                this.y = canvas.height - 60;
+            }
+        }
+
+        else if (this.estado === "piso") {
+            this.tiempoPiso++;
+
+            // luego de 1 segundo → aparece alma
+            if (this.tiempoPiso > 60) {
+                this.estado = "alma";
+                this.almaY = this.y;
+            }
+        }
+
+        else if (this.estado === "alma") {
+            this.almaY -= 2;
+
+            // si el alma sale arriba, eliminar
+            if (this.almaY < -100) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    dibujar() {
+        if (this.estado === "cayendo") {
+            ctx.drawImage(espositoFrames[this.frame], this.x, this.y, this.width, this.height);
+        }
+        else if (this.estado === "piso") {
+            ctx.drawImage(espositoFrames[6], this.x, this.y, this.width, this.height);
+        }
+        else if (this.estado === "alma") {
+            ctx.drawImage(espositoFrames[7], this.x, this.almaY, this.width, this.height);
+        }
+    }
+}
+
+// Lista de espositos cayendo
+let espositos = [];
+
+// Cada 1 segundo cae un nuevo esposito
+setInterval(() => {
+    espositos.push(new EspositoCayendo());
+}, 1000);
+
+// DIBUJAR ESPOSITO dentro del bucle principal
+const dibujarOriginal = dibujar;
+dibujar = function () {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Dibujar esposita
+    dibujarOriginal();
+
+    // Dibujar espositos cayendo
+    espositos = espositos.filter(e => {
+        const seguir = e.actualizar();
+        e.dibujar();
+        return seguir;
+    });
+};
