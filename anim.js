@@ -162,19 +162,19 @@ for (let i = 1; i <= 8; i++) {
 class EspositoCayendo {
     constructor() {
 
-        // Sale desde más arriba del cielo
-        this.y = -canvas.height * 5;
+        // EN CELULAR: mucho más arriba
+        if (window.innerWidth <= 600) {
+            this.y = -canvas.height * 12;
+        }
+        // EN PC: normal
+        else {
+            this.y = -canvas.height * 5;
+        }
 
-        // Caída horizontal aleatoria
+        // Resto igual
         this.x = Math.random() * (canvas.width - 40 * escala);
-
-        // Velocidad de caída
         this.speed = 4 + Math.random() * 3;
-
-        // Frame inicial aleatorio
         this.frame = Math.floor(Math.random() * 6);
-
-        // Tamaño responsive similar a esposita
         this.width = 40 * escala;
         this.height = 90 * escala;
 
@@ -224,6 +224,7 @@ class EspositoCayendo {
         }
     }
 }
+
 
 // Lista de espositos cayendo
 let espositos = [];
