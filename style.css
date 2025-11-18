@@ -1,0 +1,93 @@
+/* Fondo general */
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Arial, sans-serif;
+
+    background-image: url("img/FondoPlaya.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    height: 100vh;
+    overflow: hidden;
+
+    /* Desactivar selección + menú */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Evitar selección global */
+* {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Canvas centrado y sin fondo rosado */
+#gameCanvas {
+    display: block;
+    background: transparent; /* ❗ Elimina el rosado */
+    margin-top: 120px; /* Baja el canvas */
+}
+
+/* Controles */
+#controls {
+    margin-top: 90px;
+    display: flex;
+    gap: 25px;
+    justify-content: center;
+    width: 100%;
+}
+
+/* Botones cute */
+#controls button {
+    width: 90px;
+    height: 90px;
+    border-radius: 20px;
+    border: none;
+    background: white;
+    font-size: 42px;
+    color: #ff69b4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 6px 0 #f5b6d1;
+    cursor: pointer;
+    transition: transform .1s ease, box-shadow .1s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Presionado */
+#controls button:active {
+    transform: translateY(6px);
+    box-shadow: 0 0 0 #f5b6d1;
+}
+
+/* MÓVIL */
+@media (max-width: 600px) {
+
+    /* Baja más el canvas SOLO en celular */
+    #gameCanvas {
+        margin-top: 250px;
+    }
+
+    /* SUBE los botones un poco (ajústalo si quieres) */
+    #controls {
+        margin-top: 10px; /* ← Ahora sí con px */
+    }
+
+    /* Botones más pequeños */
+    #controls button {
+        width: 80px;
+        height: 80px;
+        font-size: 38px;
+        touch-action: none;
+    }
+}
+
