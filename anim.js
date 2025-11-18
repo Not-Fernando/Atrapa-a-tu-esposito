@@ -42,6 +42,7 @@ const leftFrames = [new Image(), new Image()];
 leftFrames[0].src = "img/Esposita Izquierda - Pie IZ.png";
 leftFrames[1].src = "img/Esposita Izquierda - Pie DE.png";
 
+
 // Jugadora
 let esposita = {
     x: canvas.width / 2 - espositaWidth / 2,
@@ -162,7 +163,7 @@ class EspositoCayendo {
     constructor() {
 
         // Sale desde más arriba del cielo
-        this.y = -canvas.height;
+        this.y = -canvas.height * 5;
 
         // Caída horizontal aleatoria
         this.x = Math.random() * (canvas.width - 40 * escala);
